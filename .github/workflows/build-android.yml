@@ -38,8 +38,7 @@ jobs:
       - name: Create TWA project
         run: |
           mkdir -p twa
-          export CI=true
-          bubblewrap init \
+          yes "" | bubblewrap init \
             --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" \
             --directory=twa \
             --skipPwaValidation
