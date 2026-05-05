@@ -38,7 +38,7 @@ jobs:
       - name: Force non-interactive build
         run: |
           export CI=true
-          yes | bubblewrap build --manifest="./twa-manifest.json" --skipSigning --skipPwaValidation
+          printf "n\n" | bubblewrap build --manifest="./twa-manifest.json" --skipSigning --skipPwaValidation
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
