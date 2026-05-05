@@ -8,6 +8,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Install Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+
       - name: Install Node
         uses: actions/setup-node@v4
         with:
@@ -18,12 +24,16 @@ jobs:
 
       - name: Create TWA project
         run: |
-          bubblewrap init --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" --directory=twa --skipPwaValidation
+          bubblewrap init \
+            --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" \
+            --directory=twa \
+            --skipPwaValidation \
+            --skipSigning
 
       - name: Build APK/AAB
         run: |
           cd twa
-          bubblewrap build
+          bubblewrap build --skipSigning
 
       - name: Upload APK/AAB
         uses: actions/upload-artifact@v4
@@ -32,3 +42,5 @@ jobs:
           path: |
             twa/*.apk
             twa/*.aab
+            twa/app/build/outputs/*/.apk
+            twa/app/build/outputs/*/.aab
