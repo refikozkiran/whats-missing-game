@@ -1,4 +1,4 @@
-const CACHE_NAME = "whats-missing-v2";
+const CACHE_NAME = "whats-missing-v3";
 const APP_SHELL = ["/", "/index.html", "/manifest.json", "/icon-192.png", "/icon-512.png", "/splash.png"];
 
 self.addEventListener("install", event => {
