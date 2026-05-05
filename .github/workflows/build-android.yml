@@ -1,6 +1,9 @@
 name: Build Android APK
 
-"on":
+on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
 
 jobs:
@@ -26,12 +29,12 @@ jobs:
         run: |
           bubblewrap init --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" --directory=twa --skipPwaValidation --skipSigning
 
-      - name: Build APK/AAB
+      - name: Build APK
         run: |
           cd twa
           bubblewrap build --skipSigning
 
-      - name: Upload APK/AAB
+      - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-build
