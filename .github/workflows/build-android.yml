@@ -152,6 +152,11 @@ jobs:
                   webView.setWebViewClient(new WebViewClient() {
                       @Override
                       public void onPageFinished(WebView view, String url) {
+                          webView.evaluateJavascript(
+                              "var s=document.getElementById('appSplash'); if(s){s.remove();}",
+                              null
+                          );
+                      
                           webView.setVisibility(View.VISIBLE);
                           if (splash != null) splash.setVisibility(View.GONE);
                       }
