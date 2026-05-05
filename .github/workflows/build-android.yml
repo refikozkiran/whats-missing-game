@@ -70,8 +70,8 @@ jobs:
                   applicationId 'com.refikozkiran.whatsmissing'
                   minSdk 23
                   targetSdk 35
-                  versionCode 2
-                  versionName '1.1'
+                  versionCode 3
+                  versionName '1.2'
               }
           }
           EOF
@@ -93,7 +93,7 @@ jobs:
 
               <application
                   android:theme="@style/AppTheme"
-                  android:label="What's Missing"
+                  android:label="Missing"
                   android:icon="@drawable/app_icon"
                   android:roundIcon="@drawable/app_icon"
                   android:usesCleartextTraffic="false"
@@ -117,85 +117,28 @@ jobs:
 
           import android.app.Activity;
           import android.os.Bundle;
-          import android.graphics.Color;
-          import android.view.Gravity;
-          import android.view.View;
           import android.webkit.WebSettings;
           import android.webkit.WebView;
           import android.webkit.WebViewClient;
-          import android.widget.FrameLayout;
-          import android.widget.ImageView;
-          import android.widget.TextView;
-          import android.widget.LinearLayout;
 
           public class MainActivity extends Activity {
-              FrameLayout root;
-              WebView webView;
-              View splash;
-
               @Override
               protected void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
 
-                  root = new FrameLayout(this);
-                  root.setBackgroundColor(Color.rgb(10,10,20));
-
-                  webView = new WebView(this);
+                  WebView webView = new WebView(this);
                   WebSettings settings = webView.getSettings();
+
                   settings.setJavaScriptEnabled(true);
                   settings.setDomStorageEnabled(true);
                   settings.setMediaPlaybackRequiresUserGesture(false);
                   settings.setLoadWithOverviewMode(true);
                   settings.setUseWideViewPort(true);
 
-                  webView.setVisibility(View.INVISIBLE);
-                  webView.setWebViewClient(new WebViewClient() {
-                      @Override
-                      public void onPageFinished(WebView view, String url) {
-                          webView.evaluateJavascript(
-                              "var s=document.getElementById('appSplash'); if(s){s.remove();}",
-                              null
-                          );
-                      
-                          webView.setVisibility(View.VISIBLE);
-                          if (splash != null) splash.setVisibility(View.GONE);
-                      }
-                  });
-
-                  LinearLayout splashLayout = new LinearLayout(this);
-                  splashLayout.setOrientation(LinearLayout.VERTICAL);
-                  splashLayout.setGravity(Gravity.CENTER);
-                  splashLayout.setBackgroundColor(Color.rgb(10,10,20));
-
-                  ImageView logo = new ImageView(this);
-                  logo.setImageResource(getResources().getIdentifier("app_icon", "drawable", getPackageName()));
-                  LinearLayout.LayoutParams logoParams = new LinearLayout.LayoutParams(220, 220);
-                  logo.setLayoutParams(logoParams);
-
-                  TextView title = new TextView(this);
-                  title.setText("What's Missing?");
-                  title.setTextColor(Color.WHITE);
-                  title.setTextSize(28);
-                  title.setGravity(Gravity.CENTER);
-                  title.setPadding(0, 28, 0, 0);
-
-                  splashLayout.addView(logo);
-                  splashLayout.addView(title);
-                  splash = splashLayout;
-
-                  root.addView(webView, new FrameLayout.LayoutParams(
-                      FrameLayout.LayoutParams.MATCH_PARENT,
-                      FrameLayout.LayoutParams.MATCH_PARENT
-                  ));
-
-                  root.addView(splashLayout, new FrameLayout.LayoutParams(
-                      FrameLayout.LayoutParams.MATCH_PARENT,
-                      FrameLayout.LayoutParams.MATCH_PARENT
-                  ));
-
-                  setContentView(root);
-
+                  webView.setWebViewClient(new WebViewClient());
                   webView.loadUrl("https://thunderous-torrone-1fb7cc.netlify.app/");
+
+                  setContentView(webView);
               }
           }
           EOF
