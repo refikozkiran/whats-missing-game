@@ -19,6 +19,9 @@ jobs:
           distribution: temurin
           java-version: 17
 
+      - name: Install Android SDK
+        uses: android-actions/setup-android@v3
+
       - name: Install Node
         uses: actions/setup-node@v4
         with:
@@ -27,12 +30,7 @@ jobs:
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
 
-      - name: Configure Bubblewrap
-        run: |
-          mkdir -p ~/.bubblewrap
-          echo '{"jdkPath":"'"$JAVA_HOME"'","androidSdkPath":"'"$ANDROID_HOME"'"}' > ~/.bubblewrap/config.json
-
-      - name: Build APK without init
+      - name: Build APK
         run: |
           bubblewrap build --manifest="./twa-manifest.json" --skipSigning --skipPwaValidation
 
