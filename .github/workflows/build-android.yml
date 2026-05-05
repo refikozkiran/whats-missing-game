@@ -136,7 +136,7 @@ jobs:
                   settings.setUseWideViewPort(true);
 
                   webView.setWebViewClient(new WebViewClient());
-                  webView.loadUrl("https://thunderous-torrone-1fb7cc.netlify.app/");
+                  webView.loadUrl("https://thunderous-torrone-1fb7cc.netlify.app/?v=999");
 
                   setContentView(webView);
               }
