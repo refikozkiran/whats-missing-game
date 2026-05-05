@@ -35,23 +35,15 @@ jobs:
           mkdir -p ~/.bubblewrap
           echo "{\"jdkPath\":\"$JAVA_HOME\",\"androidSdkPath\":\"$ANDROID_HOME\"}" > ~/.bubblewrap/config.json
 
-      - name: Create TWA project
+      # 🔥 DOĞRUDAN PROJE OLUŞTUR (INIT YOK)
+      - name: Generate project from config
         run: |
-          mkdir -p twa
-          yes "" | bubblewrap init \
-            --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" \
-            --directory=twa \
-            --skipPwaValidation
-
-      - name: Build APK
-        run: |
-          cd twa
-          printf "n\n" | bubblewrap build --skipSigning
+          bubblewrap build --manifest=./twa-manifest.json --skipPwaValidation --skipSigning
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-build
           path: |
-            twa/**/*.apk
-            twa/**/*.aab
+            **/*.apk
+            **/*.aab
