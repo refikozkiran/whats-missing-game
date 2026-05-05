@@ -11,6 +11,8 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - uses: actions/checkout@v4
+
       - name: Install Java
         uses: actions/setup-java@v4
         with:
@@ -25,14 +27,18 @@ jobs:
       - name: Install Bubblewrap
         run: npm install -g @bubblewrap/cli
 
+      - name: Configure Bubblewrap
+        run: |
+          bubblewrap updateConfig --jdkPath="$JAVA_HOME" --androidSdkPath="$ANDROID_HOME"
+
       - name: Create TWA project
         run: |
-          bubblewrap init --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" --directory=twa --skipPwaValidation --skipSigning
+          bubblewrap init --directory=twa --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" --skipPwaValidation
 
       - name: Build APK
         run: |
           cd twa
-          bubblewrap build --skipSigning
+          bubblewrap build
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
