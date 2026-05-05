@@ -29,21 +29,17 @@ jobs:
 
       - name: Configure Bubblewrap
         run: |
-          bubblewrap updateConfig --jdkPath="$JAVA_HOME" --androidSdkPath="$ANDROID_HOME"
+          mkdir -p ~/.bubblewrap
+          echo '{"jdkPath":"'"$JAVA_HOME"'","androidSdkPath":"'"$ANDROID_HOME"'"}' > ~/.bubblewrap/config.json
 
-      - name: Create TWA project
+      - name: Build APK without init
         run: |
-          bubblewrap init --directory=twa --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" --skipPwaValidation
-
-      - name: Build APK
-        run: |
-          cd twa
-          bubblewrap build
+          bubblewrap build --manifest="./twa-manifest.json" --skipSigning --skipPwaValidation
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: android-build
           path: |
-            twa/**/*.apk
-            twa/**/*.aab
+            **/*.apk
+            **/*.aab
