@@ -36,7 +36,5 @@ jobs:
         with:
           name: android-build
           path: |
-            twa/*.apk
-            twa/*.aab
-            twa/app/build/outputs/*/.apk
-            twa/app/build/outputs/*/.aab
+            twa/**/*.apk
+            twa/**/*.aab
