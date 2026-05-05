@@ -26,6 +26,9 @@ jobs:
         run: |
           mkdir -p app/src/main/java/com/refikozkiran/whatsmissing
           mkdir -p app/src/main/res/values
+          mkdir -p app/src/main/res/drawable
+
+          cp icon-512.png app/src/main/res/drawable/app_icon.png
 
           cat > settings.gradle <<'EOF'
           pluginManagement {
@@ -67,18 +70,19 @@ jobs:
                   applicationId 'com.refikozkiran.whatsmissing'
                   minSdk 23
                   targetSdk 35
-                  versionCode 1
-                  versionName '1.0'
+                  versionCode 2
+                  versionName '1.1'
               }
           }
           EOF
 
           cat > app/src/main/res/values/styles.xml <<'EOF'
           <resources>
-              <style name="AppTheme" parent="android:style/Theme.Material.Light.NoActionBar">
+              <style name="AppTheme" parent="android:style/Theme.Material.NoActionBar">
                   <item name="android:windowNoTitle">true</item>
                   <item name="android:windowActionBar">false</item>
                   <item name="android:windowFullscreen">true</item>
+                  <item name="android:windowBackground">#0a0a14</item>
               </style>
           </resources>
           EOF
@@ -90,6 +94,8 @@ jobs:
               <application
                   android:theme="@style/AppTheme"
                   android:label="Missing"
+                  android:icon="@drawable/app_icon"
+                  android:roundIcon="@drawable/app_icon"
                   android:usesCleartextTraffic="false"
                   android:hardwareAccelerated="true">
 
@@ -111,28 +117,80 @@ jobs:
 
           import android.app.Activity;
           import android.os.Bundle;
+          import android.graphics.Color;
+          import android.view.Gravity;
+          import android.view.View;
           import android.webkit.WebSettings;
           import android.webkit.WebView;
           import android.webkit.WebViewClient;
+          import android.widget.FrameLayout;
+          import android.widget.ImageView;
+          import android.widget.TextView;
+          import android.widget.LinearLayout;
 
           public class MainActivity extends Activity {
+              FrameLayout root;
+              WebView webView;
+              View splash;
+
               @Override
               protected void onCreate(Bundle savedInstanceState) {
                   super.onCreate(savedInstanceState);
 
-                  WebView webView = new WebView(this);
-                  WebSettings settings = webView.getSettings();
+                  root = new FrameLayout(this);
+                  root.setBackgroundColor(Color.rgb(10,10,20));
 
+                  webView = new WebView(this);
+                  WebSettings settings = webView.getSettings();
                   settings.setJavaScriptEnabled(true);
                   settings.setDomStorageEnabled(true);
                   settings.setMediaPlaybackRequiresUserGesture(false);
                   settings.setLoadWithOverviewMode(true);
                   settings.setUseWideViewPort(true);
 
-                  webView.setWebViewClient(new WebViewClient());
-                  webView.loadUrl("https://thunderous-torrone-1fb7cc.netlify.app/");
+                  webView.setVisibility(View.INVISIBLE);
+                  webView.setWebViewClient(new WebViewClient() {
+                      @Override
+                      public void onPageFinished(WebView view, String url) {
+                          webView.setVisibility(View.VISIBLE);
+                          if (splash != null) splash.setVisibility(View.GONE);
+                      }
+                  });
 
-                  setContentView(webView);
+                  LinearLayout splashLayout = new LinearLayout(this);
+                  splashLayout.setOrientation(LinearLayout.VERTICAL);
+                  splashLayout.setGravity(Gravity.CENTER);
+                  splashLayout.setBackgroundColor(Color.rgb(10,10,20));
+
+                  ImageView logo = new ImageView(this);
+                  logo.setImageResource(getResources().getIdentifier("app_icon", "drawable", getPackageName()));
+                  LinearLayout.LayoutParams logoParams = new LinearLayout.LayoutParams(220, 220);
+                  logo.setLayoutParams(logoParams);
+
+                  TextView title = new TextView(this);
+                  title.setText("What's Missing?");
+                  title.setTextColor(Color.WHITE);
+                  title.setTextSize(28);
+                  title.setGravity(Gravity.CENTER);
+                  title.setPadding(0, 28, 0, 0);
+
+                  splashLayout.addView(logo);
+                  splashLayout.addView(title);
+                  splash = splashLayout;
+
+                  root.addView(webView, new FrameLayout.LayoutParams(
+                      FrameLayout.LayoutParams.MATCH_PARENT,
+                      FrameLayout.LayoutParams.MATCH_PARENT
+                  ));
+
+                  root.addView(splashLayout, new FrameLayout.LayoutParams(
+                      FrameLayout.LayoutParams.MATCH_PARENT,
+                      FrameLayout.LayoutParams.MATCH_PARENT
+                  ));
+
+                  setContentView(root);
+
+                  webView.loadUrl("https://thunderous-torrone-1fb7cc.netlify.app/");
               }
           }
           EOF
