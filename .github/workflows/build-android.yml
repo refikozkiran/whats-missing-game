@@ -1,6 +1,6 @@
 name: Build Android APK
 
-on:
+"on":
   workflow_dispatch:
 
 jobs:
@@ -24,11 +24,7 @@ jobs:
 
       - name: Create TWA project
         run: |
-          bubblewrap init \
-            --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" \
-            --directory=twa \
-            --skipPwaValidation \
-            --skipSigning
+          bubblewrap init --manifest="https://thunderous-torrone-1fb7cc.netlify.app/manifest.json" --directory=twa --skipPwaValidation --skipSigning
 
       - name: Build APK/AAB
         run: |
