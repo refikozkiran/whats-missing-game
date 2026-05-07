@@ -165,12 +165,76 @@ body{background:#0a0a14;color:#f0f0ff;font-family:Arial,sans-serif;min-height:10
 <link rel="icon" href="/icon-192.png" type="image/png">
 <link rel="apple-touch-icon" href="/icon-192.png">
 <style>
-#appSplash{position:fixed;inset:0;background:#0a0a14;display:flex;align-items:center;justify-content:center;flex-direction:column;z-index:99999;transition:opacity .35s ease}
-#appSplash.hide{opacity:0;pointer-events:none}
-#appSplash .sp-logo{width:152px;height:152px;border-radius:34px;filter:drop-shadow(0 0 28px rgba(124,58,255,.65));animation:spFloat 2.2s ease-in-out infinite}
-#appSplash .sp-title{margin-top:18px;font-size:24px;font-weight:900;letter-spacing:-.5px;background:linear-gradient(135deg,#fff,#a78bfa,#ff3a7c);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
-#appSplash .sp-sub{margin-top:6px;color:#777;font-size:12px;letter-spacing:2px;text-transform:uppercase}
-@keyframes spFloat{0%,100%{transform:translateY(0) scale(1)}50%{transform:translateY(-8px) scale(1.03)}}
+#appSplash{
+  position:fixed;
+  inset:0;
+  background:#0a0a14;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  flex-direction:column;
+  z-index:99999;
+  transition:opacity .55s ease, transform .55s ease;
+}
+
+#appSplash.hide{
+  opacity:0;
+  transform:scale(1.04);
+  pointer-events:none;
+}
+
+#appSplash .sp-logo{
+  width:160px;
+  height:160px;
+  border-radius:34px;
+  filter:drop-shadow(0 0 32px rgba(124,58,255,.75));
+  animation:spFloat 2.2s ease-in-out infinite;
+}
+
+#appSplash .sp-title{
+  margin-top:18px;
+  font-size:28px;
+  font-weight:900;
+  background:linear-gradient(135deg,#fff,#a78bfa,#ff3a7c);
+  -webkit-background-clip:text;
+  -webkit-text-fill-color:transparent;
+}
+
+#appSplash .sp-sub{
+  margin-top:6px;
+  color:#777;
+  font-size:12px;
+  letter-spacing:2px;
+  text-transform:uppercase;
+}
+
+.loader{
+  margin-top:24px;
+  width:110px;
+  height:6px;
+  background:rgba(255,255,255,.08);
+  border-radius:99px;
+  overflow:hidden;
+}
+
+.loader span{
+  display:block;
+  height:100%;
+  width:40%;
+  background:linear-gradient(90deg,#7c3aff,#ff3a7c);
+  border-radius:99px;
+  animation:loadingMove 1.1s ease-in-out infinite;
+}
+
+@keyframes spFloat{
+  0%,100%{transform:translateY(0) scale(1)}
+  50%{transform:translateY(-8px) scale(1.03)}
+}
+
+@keyframes loadingMove{
+  0%{transform:translateX(-120%)}
+  100%{transform:translateX(280%)}
+}
 </style>
 <script>
 if ('serviceWorker' in navigator) {
