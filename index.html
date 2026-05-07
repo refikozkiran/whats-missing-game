@@ -243,9 +243,14 @@ if ('serviceWorker' in navigator) {
 }
 window.addEventListener('load', function(){
   setTimeout(function(){
-    var s=document.getElementById('appSplash');
-    if(s){s.classList.add('hide'); setTimeout(function(){s.remove();},450);}
-  }, 1000);
+    var s = document.getElementById('appSplash');
+    if(s){
+      s.classList.add('hide');
+      setTimeout(function(){
+        s.remove();
+      }, 600);
+    }
+  }, 1800);
 });
 </script>
 
